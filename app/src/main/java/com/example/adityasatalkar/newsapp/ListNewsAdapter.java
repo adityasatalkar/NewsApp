@@ -73,7 +73,7 @@ public class ListNewsAdapter extends BaseAdapter {
             String times[] = time.split("\\-|T");
             int month = Integer.parseInt(times[1]);
             Log.d("listAdapter" , times[0] + " " +  times[1] + " " + times[2]);
-            holder.time.setText(times[2] + " " +months[month]  + " " + times[0]);
+            holder.time.setText(times[2] + " " +months[month-1]  + " " + times[0]);
 //            holder.sdetails.setText(song.get(MainActivity.KEY_DESCRIPTION));
 
             if(song.get(MainActivity.KEY_URLTOIMAGE).toString().length() < 5)
