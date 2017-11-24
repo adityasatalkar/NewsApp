@@ -1,6 +1,7 @@
 package com.example.adityasatalkar.newsapp;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class ListNewsAdapter extends BaseAdapter {
     private int position;
     private View convertView;
     private ViewGroup parent;
+    String[] months = {"January" , "Feb" , "Mar" , "Apr" , "May" , "Jun" , "Jul" , "Aug" , "Sep" , "Oct" , "Nov" , "Dec"};
 
     public ListNewsAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
         activity = a;
@@ -45,30 +47,34 @@ public class ListNewsAdapter extends BaseAdapter {
         ListNewsViewHolder holder = null;
         if (convertView == null) {
             holder = new ListNewsViewHolder();
-            convertView = LayoutInflater.from(activity).inflate(R.layout.list_row, parent, false);
+            convertView = LayoutInflater.from(activity).inflate(R.layout.list_row_new, parent, false);
             holder.galleryImage = (ImageView) convertView.findViewById(R.id.galleryImage);
-            holder.author = (TextView) convertView.findViewById(R.id.author);
+//            holder.author = (TextView) convertView.findViewById(R.id.author);
             holder.title = (TextView) convertView.findViewById(R.id.title);
-            holder.sdetails = (TextView) convertView.findViewById(R.id.sdetails);
+//            holder.sdetails = (TextView) convertView.findViewById(R.id.sdetails);
             holder.time = (TextView) convertView.findViewById(R.id.time);
             convertView.setTag(holder);
         } else {
             holder = (ListNewsViewHolder) convertView.getTag();
         }
         holder.galleryImage.setId(position);
-        holder.author.setId(position);
+//        holder.author.setId(position);
         holder.title.setId(position);
-        holder.sdetails.setId(position);
+//        holder.sdetails.setId(position);
         holder.time.setId(position);
 
         HashMap<String, String> song = new HashMap<String, String>();
         song = data.get(position);
 
         try{
-            holder.author.setText(song.get(MainActivity.KEY_AUTHOR));
+            //holder.author.setText(song.get(MainActivity.KEY_AUTHOR));
             holder.title.setText(song.get(MainActivity.KEY_TITLE));
-            holder.time.setText(song.get(MainActivity.KEY_PUBLISHEDAT));
-            holder.sdetails.setText(song.get(MainActivity.KEY_DESCRIPTION));
+            String time = song.get(MainActivity.KEY_PUBLISHEDAT);
+            String times[] = time.split("\\-|T");
+            int month = Integer.parseInt(times[1]);
+            Log.d("listAdapter" , times[0] + " " +  times[1] + " " + times[2]);
+            holder.time.setText(times[2] + " " +months[month]  + " " + times[0]);
+//            holder.sdetails.setText(song.get(MainActivity.KEY_DESCRIPTION));
 
             if(song.get(MainActivity.KEY_URLTOIMAGE).toString().length() < 5)
             {
@@ -76,7 +82,6 @@ public class ListNewsAdapter extends BaseAdapter {
             }else{
                 Picasso.with(activity)
                         .load(song.get(MainActivity.KEY_URLTOIMAGE).toString())
-                        .resize(300, 200)
                         .into(holder.galleryImage);
             }
         }catch(Exception e) {}
