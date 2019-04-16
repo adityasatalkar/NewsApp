@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     String NEWS_SOURCE = "techcrunch";
     ListView listNews;
     ProgressBar loader;
+    Button button;
 
     ArrayList<HashMap<String, String>> dataList = new ArrayList<HashMap<String, String>>();
     static final String KEY_AUTHOR = "author";
@@ -42,7 +45,15 @@ public class MainActivity extends AppCompatActivity {
         listNews = (ListView) findViewById(R.id.listNews);
         loader = (ProgressBar) findViewById(R.id.loader);
         listNews.setEmptyView(loader);
+        button = (Button) findViewById(R.id.toSelection);
 
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SelectionActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         if(Function.isNetworkAvailable(getApplicationContext()))
@@ -79,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonResponse = new JSONObject(xml);
                     JSONArray jsonArray = jsonResponse.optJSONArray("articles");
-
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         HashMap<String, String> map = new HashMap<String, String>();
